@@ -16,16 +16,16 @@ batt_icon = pygame.image.load("./images/battery_charging_full_black_24dp.svg")
 batt_icon_x = 15*2
 batt_icon_y = 10*2
 
-background_img = pygame.image.load("./images/background.png")
+background_img = pygame.image.load("./images/background.svg")
 background_img = pygame.transform.scale(background_img, (screen_width, screen_height))
 background_x = -5
 background_y = 0
 pygame.font.get_fonts()
 ['arial', 'arialblack', 'bahnschrift']
 
-header_font = pygame.font.SysFont('bahnschrift', 28)
-usage_font = pygame.font.SysFont('bahnschrift', 20*2)
-footer_font = pygame.font.SysFont('bahnschrift', 12*2)
+header_font = pygame.font.SysFont('bahnschrift', 35)
+usage_font = pygame.font.SysFont('bahnschrift', 45)
+footer_font = pygame.font.SysFont('bahnschrift', 35)
 
 title = "RELCON Homebox #"
 box_num = 4
