@@ -1,4 +1,6 @@
 import pygame
+import random
+import time
 from math import radians, sin, cos
 
 pygame.init()
@@ -34,6 +36,7 @@ box_num = 4
 batt_status = 0 
 connection_status = 0
 
+
 ######
 
 def render_icons(batt_status, connection_status):
@@ -43,9 +46,9 @@ def render_icons(batt_status, connection_status):
         batt_icon = pygame.image.load("./images/sharp_battery_3_bar_black_24dp.png")
 
     if connection_status:
-        wifi_icon = pygame.image.load("./images/outline_wifi_black_24dp.png")
+        wifi_icon = pygame.image.load("./images/sharp_wifi_black_24dp.png")
     else:
-        wifi_icon = pygame.image.load("./images/outline_wifi_off_black_24dp.png")
+        wifi_icon = pygame.image.load("./images/sharp_wifi_off_black_24dp.png")
     
     screen.blit(wifi_icon, (wifi_icon_x, wifi_icon_y))
     screen.blit(batt_icon, (batt_icon_x, batt_icon_y))
@@ -81,6 +84,39 @@ def drawArc(display, startAngle, endAngle, distance, pos, color, thickness=1):
             display.set_at((x, y), color)
             theta += 0.01
 
+def update_data():
+    # this is where we read the serial line in a try catch
+    # we then pass the values to QML
+    
+    # ser = serial.Serial('/dev/ttyS0',
+    #                     baudrate = 9600)
+    # data = ser.read_until(b'\n').decode('ascii')
+    # data =  list(data)
+    # data = ''.join(data)
+    # data = json.loads(data)
+
+    # curr_power_usage = data['curr_power']
+    # connection_status = data['link_status']
+    # box_num = data['box_num']
+    # curr_time = data['curr_time']
+
+    # temporary hardcoded data for demo
+    power_limit = 300
+    i = random.randint(1,300)
+    curr_power_usage = i/power_limit * 270
+    connection_status = 0
+    box_num = 4
+
+    if i > 240:
+        color = (200, 0, 0)
+    elif i > 200:
+        color = (255, 191, 0)
+    else:
+        color = (0, 128, 0)
+
+
+    drawArc(screen, 225, 225-curr_power_usage, 60*2, [screen_width/2, screen_height/2 + 22*2], color, thickness = 15)
+
 running = True
 while running:
     screen.fill((255, 255, 255))
@@ -92,6 +128,6 @@ while running:
     render_icons(batt_status, connection_status)
     render_text()
     drawArc(screen, 225, -45, 60*2, [screen_width/2, screen_height/2 + 22*2], (72, 72, 72), thickness = 15)
-    drawArc(screen, 225, 225-30, 60*2, [screen_width/2, screen_height/2 + 22*2], (0, 128, 0), thickness = 15)
-    
+    update_data()
     pygame.display.update()
+    time.sleep(4)
