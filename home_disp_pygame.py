@@ -39,8 +39,8 @@ title = "RELCON Homebox #"
 box_num = 4
 
 ######
-batt_status = 0 
-connection_status = 0
+batt_status = 1 
+connection_status = 1
 
 
 ######
@@ -62,7 +62,7 @@ def render_icons(batt_status, connection_status):
 def render_text():
     header_x = 180
     header_y = 24
-    usage_x = 260
+    usage_x = 250
     usage_y = 100
     footer_x = 215
     footer_y = 410
