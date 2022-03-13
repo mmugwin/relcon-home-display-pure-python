@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
-path = "."
+#path = "."
 
 wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
 wifi_icon_x = 90
