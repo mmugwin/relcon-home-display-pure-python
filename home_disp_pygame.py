@@ -158,14 +158,6 @@ def update_data():
     #     ser.close()
 
     # except:
-    #     curr_power_usage = random.randint(1, power_limit)
-    #     curr_power_usage = int(curr_power_usage/power_limit * 270)
-    #     power_status = check_power_status(curr_power_usage)
-    #     connection_status = 0
-    #     box_num = 2
-
-    #     comms_connection = 0
-    #     hub_connection = 0
     #     render_text(box_num)
     #     render_icons(hub_connection, comms_connection)
 
@@ -174,8 +166,10 @@ def update_data():
     #     curr_power_y = 250    
     #     curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
     #     screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
-    #     draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
+    #     draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)      
 
+    #     ser.close()
+    #     pass
 
     # temporary dummy data
     curr_power_usage = random.randint(1, power_limit)
@@ -196,8 +190,10 @@ def update_data():
     screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
     draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
 
+pygame.mouse.set_visible(False)
 running = True
 while running:
+    pygame.mouse.set_visible(False)
     screen.fill((255, 255, 255))
     screen.blit(background_img, (0, 0))
     for event in pygame.event.get():
@@ -206,5 +202,6 @@ while running:
 
     draw_arc(screen, 225, -45, 120, [screen_width/2, screen_height/2 + 40 + 10], (72, 72, 72), thickness = 15)
     update_data()
+    pygame.mouse.set_visible(False)
     pygame.display.update()
     time.sleep(4)
