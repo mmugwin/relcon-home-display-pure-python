@@ -123,7 +123,8 @@ def update_data():
     power_limit = 300
     try:
         ser = serial.Serial('/dev/ttyS0',
-                            baudrate = 9600, timeout = 1)
+                baudrate = 9600, timeout = 1)
+
         data = ser.read_until(b'\n').decode('ascii', 'ignore')
         print(data)
 
@@ -193,7 +194,12 @@ def update_data():
     # curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
     # screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
     # draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
-    
+
+# render default place holder
+
+render_icons(0, 0)
+render_text(0)
+
 running = True
 while running:
     screen.fill((255, 255, 255))
