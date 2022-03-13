@@ -28,6 +28,8 @@ pygame.font.get_fonts()
 header_font = pygame.font.SysFont('bahnschrift', 35)
 usage_font = pygame.font.SysFont('bahnschrift', 45)
 footer_font = pygame.font.SysFont('bahnschrift', 35)
+curr_power_font = pygame.font.SysFont('bahnschrift', 60)
+
 
 title = "RELCON Homebox #"
 box_num = 4
@@ -103,7 +105,7 @@ def update_data():
     # temporary hardcoded data for demo
     power_limit = 300
     i = random.randint(1,300)
-    curr_power_usage = i/power_limit * 270
+    curr_power_usage = int(i/power_limit * 270)
     connection_status = 0
     box_num = 4
 
@@ -114,6 +116,15 @@ def update_data():
     else:
         color = (0, 128, 0)
 
+    if i < 100:
+        curr_power_x = 250
+    else:
+        curr_power_x = 240
+    
+    curr_power_y = 240
+    
+    curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
+    screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
 
     drawArc(screen, 225, 225-curr_power_usage, 60*2, [screen_width/2, screen_height/2 + 22*2], color, thickness = 15)
 
