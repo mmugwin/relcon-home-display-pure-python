@@ -12,16 +12,17 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
+# path = "."
 
-wifi_icon = pygame.image.load(path+"/images/outline_wifi_black_24dp.png")
+wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
 wifi_icon_x = 90
 wifi_icon_y = 20
 
-batt_icon = pygame.image.load(path+"/images/battery_charging_full_black_24dp.svg")
+batt_icon = pygame.image.load(path + "/images/battery_charging_full_black_24dp.svg")
 batt_icon_x = 30
 batt_icon_y = 20
 
-background_img = pygame.image.load(path+"/images/background.svg")
+background_img = pygame.image.load(path + "/images/background.svg")
 background_img = pygame.transform.scale(background_img, (screen_width, screen_height))
 background_x = -5
 background_y = 0
@@ -40,14 +41,14 @@ title = "RELCON Homebox #"
 
 def render_icons(batt_status, connection_status):
     if batt_status:
-        batt_icon = pygame.image.load("./images/sharp_battery_charging_full_black_24dp.png")
+        batt_icon = pygame.image.load(path + "/images/sharp_battery_charging_full_black_24dp.png")
     else:
-        batt_icon = pygame.image.load("./images/sharp_battery_3_bar_black_24dp.png")
+        batt_icon = pygame.image.load(path + "/images/sharp_battery_3_bar_black_24dp.png")
 
     if connection_status:
-        wifi_icon = pygame.image.load("./images/sharp_wifi_black_24dp.png")
+        wifi_icon = pygame.image.load(path + "/images/sharp_wifi_black_24dp.png")
     else:
-        wifi_icon = pygame.image.load("./images/sharp_wifi_off_black_24dp.png")
+        wifi_icon = pygame.image.load(path + "/images/sharp_wifi_off_black_24dp.png")
     
     screen.blit(wifi_icon, (wifi_icon_x, wifi_icon_y))
     screen.blit(batt_icon, (batt_icon_x, batt_icon_y))
