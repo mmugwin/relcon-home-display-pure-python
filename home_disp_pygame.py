@@ -195,11 +195,6 @@ def update_data():
     # screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
     # draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
 
-# render default place holder
-
-render_icons(0, 0)
-render_text(0)
-
 running = True
 while running:
     screen.fill((255, 255, 255))
