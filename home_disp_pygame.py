@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
-#path = "."
+path = "."
 
 wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
 wifi_icon_x = 90
@@ -43,7 +43,8 @@ def render_icons(batt_status, connection_status):
     if batt_status:
         batt_icon = pygame.image.load(path + "/images/sharp_battery_charging_full_black_24dp.png")
     else:
-        batt_icon = pygame.image.load(path + "/images/sharp_battery_3_bar_black_24dp.png")
+        batt_icon = pygame.image.load(path + "/images/battery_unknown_black_36dp.svg")
+        # batt_icon = pygame.image.load(path + "/images/battery_0_bar_black_36dp.svg")
 
     if connection_status:
         wifi_icon = pygame.image.load(path + "/images/sharp_wifi_black_24dp.png")
@@ -121,6 +122,28 @@ def check_power_status(curr_power_usage):
 
 def update_data():
     power_limit = 300
+    # temporary dummy data
+    # curr_power_usage = random.randint(1, power_limit)
+    curr_power_usage = 3
+    curr_power_usage = int(curr_power_usage/power_limit * 270)
+    power_status = check_power_status(curr_power_usage)
+    connection_status = 0
+    box_num = 2
+
+    comms_connection = 0
+    hub_connection = 0
+    render_text(box_num)
+    render_icons(hub_connection, comms_connection)
+
+    color = power_status[0]    
+    curr_power_x = power_status[1]
+    curr_power_y = 250    
+    curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
+    screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
+    draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
+
+    # end of dummy data
+
     # try:
     #     ser = serial.Serial('/dev/ttyS0',
     #             baudrate = 9600, timeout = 1)
@@ -158,8 +181,8 @@ def update_data():
     #     ser.close()
 
     # except:
-    #     render_text(box_num)
-    #     render_icons(hub_connection, comms_connection)
+    #     render_text(0)
+    #     render_icons(0, 0)
 
     #     color = power_status[0]    
     #     curr_power_x = power_status[1]
@@ -167,28 +190,8 @@ def update_data():
     #     curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
     #     screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
     #     draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)      
-
-    #     ser.close()
-    #     pass
-
-    # temporary dummy data
-    curr_power_usage = random.randint(1, power_limit)
-    curr_power_usage = int(curr_power_usage/power_limit * 270)
-    power_status = check_power_status(curr_power_usage)
-    connection_status = 0
-    box_num = 2
-
-    comms_connection = 0
-    hub_connection = 0
-    render_text(box_num)
-    render_icons(hub_connection, comms_connection)
-
-    color = power_status[0]    
-    curr_power_x = power_status[1]
-    curr_power_y = 250    
-    curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
-    screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
-    draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
+        # ser.close()
+        # pass
 
 pygame.mouse.set_visible(False)
 running = True
