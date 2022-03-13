@@ -4,19 +4,19 @@ import time
 from math import radians, sin, cos
 
 pygame.init()
-screen_width = 320*2
-screen_height = 240*2
+screen_width = 640
+screen_height = 480
 # screen = pygame.display.set_mode((screen_width, screen_height))
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("RELCON InHome Display")
 
 wifi_icon = pygame.image.load("./images/outline_wifi_black_24dp.png")
-wifi_icon_x = 45*2
-wifi_icon_y = 10*2
+wifi_icon_x = 90
+wifi_icon_y = 20
 
 batt_icon = pygame.image.load("./images/battery_charging_full_black_24dp.svg")
-batt_icon_x = 15*2
-batt_icon_y = 10*2
+batt_icon_x = 30
+batt_icon_y = 20
 
 background_img = pygame.image.load("./images/background.svg")
 background_img = pygame.transform.scale(background_img, (screen_width, screen_height))
@@ -25,11 +25,15 @@ background_y = 0
 pygame.font.get_fonts()
 ['arial', 'arialblack', 'bahnschrift']
 
-header_font = pygame.font.SysFont('bahnschrift', 35)
-usage_font = pygame.font.SysFont('bahnschrift', 45)
-footer_font = pygame.font.SysFont('bahnschrift', 35)
-curr_power_font = pygame.font.SysFont('bahnschrift', 60)
+# header_font = pygame.font.SysFont('bahnschrift', 35)
+# usage_font = pygame.font.SysFont('bahnschrift', 45)
+# footer_font = pygame.font.SysFont('bahnschrift', 35)
+# curr_power_font = pygame.font.SysFont('bahnschrift', 60)
 
+header_font = pygame.font.SysFont('dejavusansmono', 35)
+usage_font = pygame.font.SysFont('dejavusansmono', 47)
+footer_font = pygame.font.SysFont('dejavusansmono', 30)
+curr_power_font = pygame.font.SysFont('liberationmono', 60)
 
 title = "RELCON Homebox #"
 box_num = 4
@@ -56,12 +60,12 @@ def render_icons(batt_status, connection_status):
     screen.blit(batt_icon, (batt_icon_x, batt_icon_y))
 
 def render_text():
-    header_x = 100*2
-    header_y = 12*2
-    usage_x = 130*2
-    usage_y = 50*2
-    footer_x = 130*2
-    footer_y = 205*2
+    header_x = 180
+    header_y = 24
+    usage_x = 260
+    usage_y = 100
+    footer_x = 215
+    footer_y = 410
 
     header = header_font.render(title + str(box_num), True, (0,0,0))
     usage_tag = usage_font.render("USAGE", True, (255, 255, 255))
@@ -104,7 +108,7 @@ def update_data():
 
     # temporary hardcoded data for demo
     power_limit = 300
-    i = random.randint(1,300)
+    i = random.randint(1,power_limit)
     curr_power_usage = int(i/power_limit * 270)
     connection_status = 0
     box_num = 4
@@ -118,15 +122,18 @@ def update_data():
 
     if i < 100:
         curr_power_x = 250
+    elif i < 200:
+        curr_power_x = 230
     else:
-        curr_power_x = 240
+        curr_power_x = 230
     
-    curr_power_y = 240
+    curr_power_y = 250
     
-    curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
+    curr_power_tag = curr_power_font.render(str(i) + " W", True, (255, 255, 255))
     screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
 
-    drawArc(screen, 225, 225-curr_power_usage, 60*2, [screen_width/2, screen_height/2 + 22*2], color, thickness = 15)
+    drawArc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
+   
 
 running = True
 while running:
@@ -138,7 +145,7 @@ while running:
 
     render_icons(batt_status, connection_status)
     render_text()
-    drawArc(screen, 225, -45, 60*2, [screen_width/2, screen_height/2 + 22*2], (72, 72, 72), thickness = 15)
+    drawArc(screen, 225, -45, 120, [screen_width/2, screen_height/2 + 40 + 10], (72, 72, 72), thickness = 15)
     update_data()
     pygame.display.update()
     time.sleep(4)
