@@ -170,12 +170,9 @@ def update_data():
     # end of dummy data
 
     try:
-        # ser = serial.Serial('/dev/ttyAM0',
-        #         baudrate = 9600, timeout = 1)
-
         ser = serial.Serial(port='/dev/ttyS0',
-            baudrate=115200,
-            timeout=4
+            baudrate = 115200,
+            timeout = 4
         )
         
         # ser = serial.Serial(port='COM10',
