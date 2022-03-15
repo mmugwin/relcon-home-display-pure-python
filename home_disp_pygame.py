@@ -35,14 +35,34 @@ header_font = pygame.font.SysFont('dejavusansmono', 35)
 usage_font = pygame.font.SysFont('dejavusansmono', 47)
 footer_font = pygame.font.SysFont('dejavusansmono', 30)
 curr_power_font = pygame.font.SysFont('liberationmono', 60)
+welcome_font = pygame.font.SysFont('liberationmono', 31)
+
+# welcome message
+pygame.mouse.set_visible(False)
+screen.fill((255, 255, 255))
+welcome_x = 180
+welcome_y = 24
+
+welcome_tag = curr_power_font.render("Welcome!", True, (0, 0, 0))
+welcome_tag1 = welcome_font.render("Please wait. System loading.", True, (0, 0, 0))
+welcome_tag2 = welcome_font.render("This may take up to 1 minute...", True, (0, 0, 0))
+
+screen.blit(welcome_tag, (welcome_x, welcome_y))
+screen.blit(welcome_tag1, (welcome_x - 120, welcome_y+120))
+screen.blit(welcome_tag2, (welcome_x - 150, welcome_y+170))
+
+pygame.mouse.set_visible(False)
+pygame.display.update()
+
 
 title = "RELCON Homebox #"
 
-time.sleep(15)
+time.sleep(30)
 
 
 def render_icons(batt_status, connection_status, batt_percent):
-    if batt_status:
+    print("Rendered Icons")
+    if batt_status == 1:
         batt_icon = pygame.image.load(path + "/images/battery_charging_full_black_36dp.svg")
     else:
         if batt_percent > 90:
@@ -60,7 +80,7 @@ def render_icons(batt_status, connection_status, batt_percent):
         else:
             batt_icon = pygame.image.load(path + "/images/battery_unknown_black_36dp.svg")
 
-    if connection_status:
+    if connection_status == 1:
         wifi_icon = pygame.image.load(path + "/images/sharp_wifi_black_24dp.png")
     else:
         wifi_icon = pygame.image.load(path + "/images/sharp_wifi_off_black_24dp.png")
@@ -100,7 +120,7 @@ def draw_arc(display, start_angle, end_angle, distance, pos, color, thickness = 
             theta += 0.01
 
 def check_keys(data):
-    keys = ['"curr_power"', '"link_status"', '"conn"', '"box_num"', '"batt_percent"']
+    keys = ['"error"','"curr_power"', '"link_status"', '"conn"', '"box_num"', '"batt_percent"']
     for key in keys:
         if key not in data:
             print(key)
@@ -108,7 +128,7 @@ def check_keys(data):
     return True
 
 def check_val_type(data):
-    keys = {"curr_power": "<class 'float'>", "link_status": "<class 'int'>", "conn": "<class 'int'>", "box_num": "<class 'int'>", "batt_percent": "<class 'float'>"}
+    keys = {"error": "<class 'int'>","curr_power": "<class 'float'>", "link_status": "<class 'int'>", "conn": "<class 'int'>", "box_num": "<class 'int'>", "batt_percent": "<class 'float'>"}
     for key in keys:
         tmp = str(type(data[key]))
         if tmp != keys[key]:
@@ -147,26 +167,6 @@ def render_error_message():
 
 def update_data():
     power_limit = 300
-    ## temporary dummy data
-    ## curr_power_usage = random.randint(1, power_limit)
-    # curr_power_usage = 3
-    # curr_power_usage = int(curr_power_usage/power_limit * 270)
-    # power_status = check_power_status(curr_power_usage)
-    # connection_status = 0
-    # box_num = 2
-
-    # comms_connection = 0
-    # hub_connection = 0
-    # render_text(box_num)
-    # render_icons(batt_status, connection_status, batt_percent)
-
-    # color = power_status[0]    
-    # curr_power_x = power_status[1]
-    # curr_power_y = 250    
-    # curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
-    # screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
-    # draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)
-
     # end of dummy data
 
     try:
@@ -207,9 +207,11 @@ def update_data():
         comms_connection = data['link_status']
         hub_connection = data['conn']
         box_num = data['box_num']
+        batt_percent = float(data['batt_percent'])
 
         render_text(box_num)
-        render_icons(batt_status, connection_status, batt_percent)
+        print("Trying to render icons")
+        render_icons(hub_connection, comms_connection, batt_percent)
 
         color = power_status[0]    
         curr_power_x = power_status[1]
@@ -221,19 +223,6 @@ def update_data():
         ser.close()
 
     except:
-        # render_text(0)
-        # render_icons(0, 0, 0)
-        # # curr_power_usage = random.randint(1, power_limit)
-        # curr_power_usage = 5
-
-        # color = (135,206,250)   
-        # curr_power_x = 250
-        # curr_power_y = 250    
-
-        # curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
-        # screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
-        # draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)      
-        # ser.close()
         pass
 
 pygame.mouse.set_visible(False)
