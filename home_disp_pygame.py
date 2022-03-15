@@ -13,7 +13,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
-path = "."
+# path = "."
 
 wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
 wifi_icon_x = 90
@@ -38,13 +38,27 @@ curr_power_font = pygame.font.SysFont('liberationmono', 60)
 
 title = "RELCON Homebox #"
 
+time.sleep(15)
 
-def render_icons(batt_status, connection_status):
+
+def render_icons(batt_status, connection_status, batt_percent):
     if batt_status:
-        batt_icon = pygame.image.load(path + "/images/sharp_battery_charging_full_black_24dp.png")
-    else:
         batt_icon = pygame.image.load(path + "/images/battery_charging_full_black_36dp.svg")
-        # batt_icon = pygame.image.load(path + "/images/battery_0_bar_black_36dp.svg")
+    else:
+        if batt_percent > 90:
+            batt_icon = pygame.image.load(path + "/images/battery_charging_full_black_36dp.svg")
+        elif batt_percent > 70:
+            batt_icon = pygame.image.load(path + "/images/battery_5_bar_black_36dp.svg")
+        elif batt_percent > 60:
+            batt_icon = pygame.image.load(path + "/images/battery_4_bar_black_36dp.svg")
+        elif batt_percent > 50:
+            batt_icon = pygame.image.load(path + "/images/battery_3_bar_black_36dp.svg")
+        elif batt_percent > 30:
+            batt_icon = pygame.image.load(path + "/images/battery_2_bar_black_36dp.svg")
+        elif batt_percent > 10:
+            batt_icon = pygame.image.load(path + "/images/battery_1_bar_black_36dp.svg")
+        else:
+            batt_icon = pygame.image.load(path + "/images/battery_unknown_black_36dp.svg")
 
     if connection_status:
         wifi_icon = pygame.image.load(path + "/images/sharp_wifi_black_24dp.png")
@@ -144,7 +158,7 @@ def update_data():
     # comms_connection = 0
     # hub_connection = 0
     # render_text(box_num)
-    # render_icons(hub_connection, comms_connection)
+    # render_icons(batt_status, connection_status, batt_percent)
 
     # color = power_status[0]    
     # curr_power_x = power_status[1]
@@ -159,7 +173,7 @@ def update_data():
         # ser = serial.Serial('/dev/ttyAM0',
         #         baudrate = 9600, timeout = 1)
 
-        ser = serial.Serial(port='/dev/ttyAMA0',
+        ser = serial.Serial(port='/dev/ttyS0',
             baudrate=115200,
             timeout=4
         )
@@ -198,7 +212,7 @@ def update_data():
         box_num = data['box_num']
 
         render_text(box_num)
-        render_icons(hub_connection, comms_connection)
+        render_icons(batt_status, connection_status, batt_percent)
 
         color = power_status[0]    
         curr_power_x = power_status[1]
@@ -211,7 +225,7 @@ def update_data():
 
     except:
         # render_text(0)
-        # render_icons(0, 0)
+        # render_icons(0, 0, 0)
         # # curr_power_usage = random.randint(1, power_limit)
         # curr_power_usage = 5
 
