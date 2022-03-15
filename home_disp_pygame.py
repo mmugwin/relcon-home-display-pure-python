@@ -8,11 +8,12 @@ from math import radians, sin, cos
 pygame.init()
 screen_width = 640
 screen_height = 480
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+# screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
-# path = "."
+path = "."
 
 wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
 wifi_icon_x = 90
@@ -42,7 +43,7 @@ def render_icons(batt_status, connection_status):
     if batt_status:
         batt_icon = pygame.image.load(path + "/images/sharp_battery_charging_full_black_24dp.png")
     else:
-        batt_icon = pygame.image.load(path + "/images/battery_unknown_black_36dp.svg")
+        batt_icon = pygame.image.load(path + "/images/battery_charging_full_black_36dp.svg")
         # batt_icon = pygame.image.load(path + "/images/battery_0_bar_black_36dp.svg")
 
     if connection_status:
@@ -110,7 +111,9 @@ def check_power_status(curr_power_usage):
     else:
         power_status.append((0, 128, 0))
 
-    if curr_power_usage < 100:
+    if curr_power_usage < 10:
+        curr_power_x = 260
+    elif curr_power_usage < 100:
         curr_power_x = 250
     elif curr_power_usage < 200:
         curr_power_x = 230
@@ -118,6 +121,15 @@ def check_power_status(curr_power_usage):
         curr_power_x = 230  
     power_status.append(curr_power_x)
     return power_status
+
+def render_error_message():
+    error_x = 70
+    error_y = 24
+    error_font = pygame.font.SysFont('dejavusansmono', 30)
+    error_tag = error_font.render("An internal error occurred!", True, (255, 0, 0))
+    recover_tag = error_font.render("Trying to recover in 4 s", True, (255, 255, 255))
+    screen.blit(error_tag, (error_x, error_y))
+    screen.blit(recover_tag, (error_x + 30, 100))
 
 def update_data():
     power_limit = 300
@@ -144,8 +156,18 @@ def update_data():
     # end of dummy data
 
     try:
-        ser = serial.Serial('/dev/ttyS0',
-                baudrate = 9600, timeout = 1)
+        # ser = serial.Serial('/dev/ttyAM0',
+        #         baudrate = 9600, timeout = 1)
+
+        ser = serial.Serial(port='/dev/ttyAMA0',
+            baudrate=115200,
+            timeout=4
+        )
+        
+        # ser = serial.Serial(port='COM10',
+        #     baudrate=115200,
+        #     timeout=4
+        # )
 
         data = ser.read_until(b'\n').decode('ascii', 'ignore')
         print(data)
@@ -162,11 +184,19 @@ def update_data():
             ser.close()
             return
 
-        curr_power_usage = data['curr_power']
+        error = int(data["error"])
+        if error:
+            render_error_message()
+            ser.close()
+            return
+
+        curr_power_usage = round(float(data['curr_power']), 0)
+        curr_power_usage = int(curr_power_usage)
         power_status = check_power_status(curr_power_usage)
         comms_connection = data['link_status']
         hub_connection = data['conn']
         box_num = data['box_num']
+
         render_text(box_num)
         render_icons(hub_connection, comms_connection)
 
@@ -192,7 +222,7 @@ def update_data():
         # curr_power_tag = curr_power_font.render(str(curr_power_usage) + " W", True, (255, 255, 255))
         # screen.blit(curr_power_tag, (curr_power_x, curr_power_y))
         # draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)      
-        ser.close()
+        # ser.close()
         pass
 
 pygame.mouse.set_visible(False)
