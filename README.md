@@ -8,13 +8,13 @@ Follow the steps below to create a fresh SD card that runs the home display code
 
 Run
 ```
-    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ```
     
 The response should be:
 
 ```
-    update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) in auto mode
+update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) in auto mode
 ```
 
 <!-- Check baseline again:
@@ -38,15 +38,15 @@ sudo apt-get install libsdl2-image-2.0-0
 Run
 
 ```
-        sudo nano /etc/xdg/autostart/display.desktop
+sudo nano /etc/xdg/autostart/display.desktop
 ```
 
 Enter the following in the file and save by ```Ctrl + Y```
 
 ```
-       [Desktop Entry]
-       Name=HomeDisplay
-       Exec=/usr/bin/python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py
+[Desktop Entry]
+Name=HomeDisplay
+Exec=/usr/bin/python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py
 ```
 
 7. Save the folder that contains the home display code on the Desktop. You can clone it from this repo, or send it to the Raspberry Pi another way. 
