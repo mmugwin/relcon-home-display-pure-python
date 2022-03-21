@@ -3,7 +3,7 @@
 Follow the steps below to create a fresh SD card that runs the home display code at start up. This code was developed for and tested on the Raspberry Pi Zero W, running the Debian Buster OS. 
 
 1. Flash an image of the Raspberry Pi OS to an SD card. Instructions [here](https://www.raspberrypi.com/documentation/computers/getting-started.html). For this development, Raspberry Pi Imager v1.7 was used.
-2. Enable the drivers for the PiTFT screen on the Raspberry Pi. Instructions [here](https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2). For this development, the install-type used is fbcp with a rotation of 270.
+2. Enable the drivers for the PiTFT screen on the Raspberry Pi. Instructions [here](https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2). For this development, the ```install-type``` used is fbcp with a ```rotation``` of ```270```.
 3. Install python3.6 or higher and make it the default python on the Raspberry Pi.
 
 Run
