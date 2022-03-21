@@ -33,7 +33,12 @@ sudo apt-get install libsdl2-image-2.0-0
 ```
 
 6. Enable the hardware serial port on the Raspberry Pi.
-7. Save the folder that contains the home display code on the Desktop. You can clone it from this repo, or send it to the Raspberry Pi another way. 
+7. Save the folder that contains the home display code on the Desktop. You can clone it from this repo, or send it to the Raspberry Pi another way. Now would be a good time to test if the home display code compiles. Run it from the terminal using:
+
+```
+sudo python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py   
+```
+
 8. Enable the Raspberry Pi to bypass the desktop at boot. There are many ways to do this, and for this development we did the following:
 
 Run
