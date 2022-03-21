@@ -6,14 +6,14 @@ Follow the steps below to create a fresh SD card that runs the home display code
 2. Enable the drivers for the PiTFT screen on the Raspberry Pi. Instructions [here](https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2). For this development, the install-type used is fbcp with a rotation of 270.
 3. Install python3.6 or higher and make it the default python on the Raspberry Pi
 
-Run
+    Run
 ```
-    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+        sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ```
-The response should be:
+    The response should be:
 
 ```
-update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) in auto mode
+    update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) in auto mode
 ```
 
 <!-- Check baseline again:
@@ -34,18 +34,18 @@ sudo apt-get install libsdl2-image-2.0-0
 
 6. Enable the Raspberry Pi to bypass the desktop at boot. There are many ways to do this, and for this development we did the following:
 
-Run
+    Run
 
 ```
-    sudo nano /etc/xdg/autostart/display.desktop
+        sudo nano /etc/xdg/autostart/display.desktop
 ```
 
-Enter the following in the file and save by ```Ctrl + Y```
+    Enter the following in the file and save by ```Ctrl + Y```
 
 ```
-   [Desktop Entry]
-   Name=HomeDisplay
-   Exec=/usr/bin/python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py
+       [Desktop Entry]
+       Name=HomeDisplay
+       Exec=/usr/bin/python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py
 ```
 
 7. Save the folder that contains the home display code on the Desktop. You can clone it from this repo, or send it to the Raspberry Pi another way. 
