@@ -16,11 +16,11 @@ The response should be:
 update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) in auto mode
 ```
 
-Check baseline again:
+<!-- Check baseline again:
 
 ```
 python --version Python 3.7.3 $ python3 --version Python 3.7.3
-```
+``` -->
 
 4. Uninstall the default pygame that comes with the Raspberry Pi and reinstall the latest version using ```pip```
 
