@@ -50,4 +50,4 @@ Name=HomeDisplay
 Exec=/usr/bin/python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py
 ```
 
-####If everything went well, your Raspberry Pi is ready to go.
+#### If everything went well, your Raspberry Pi is ready to go.
