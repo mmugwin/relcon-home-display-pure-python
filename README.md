@@ -1,4 +1,4 @@
-# Prerequisites
+# Setup
 
 Follow the steps below to create a fresh SD card that runs the home display code at start up. This code was developed for and tested on the Raspberry Pi Zero W, running the Debian Buster OS. 
 
