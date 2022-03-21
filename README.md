@@ -22,7 +22,7 @@ update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) 
 python --version Python 3.7.3 $ python3 --version Python 3.7.3
 ``` -->
 
-4. Uninstall the default pygame that comes with the Raspberry Pi and reinstall the latest version using ```pip```
+4. Uninstall the default ```pygame``` that comes with the Raspberry Pi and reinstall the latest version using ```pip```
 
 5. To be able to render fonts and images using pygame run the below commands from the terminal
    
