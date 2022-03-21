@@ -10,7 +10,8 @@ Follow the steps below to create a fresh SD card that runs the home display code
 ```
         sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ```
-    The response should be:
+    
+   The response should be:
 
 ```
     update-alternatives: using /usr/bin/python3 to provide /usr/bin/python (python) in auto mode
