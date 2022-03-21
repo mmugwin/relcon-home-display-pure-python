@@ -115,12 +115,12 @@ def render_text(box_num):
 def draw_arc(display, start_angle, end_angle, distance, pos, color, thickness = 1):
     if start_angle > end_angle:
         theta = end_angle
-        bigger = start_angle
+        larger_angle = start_angle
     else:
         theta = start_angle
-        bigger = end_angle
+        larger_angle = end_angle
         
-    while theta < bigger: 
+    while theta < larger_angle: 
         for t in range(thickness):
             x = round((cos(radians(theta)) * (distance-t)) + pos[0])
             y = round((-sin(radians(theta)) * (distance-t)) + pos[1])
@@ -193,7 +193,6 @@ def render_error_message(error):
 
 def update_data():
     power_limit = 300
-    # end of dummy data
 
     try:
         ser = serial.Serial(port='/dev/ttyS0',
