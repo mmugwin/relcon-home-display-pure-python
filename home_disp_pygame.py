@@ -1,3 +1,9 @@
+'''
+    This script displays electrical measurements read as serial data from the homebox.
+    Author:
+        Ngoni Mugwisi - 11/03/2022
+'''
+
 import pygame
 import random
 import time
@@ -13,8 +19,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
-# path = "."
+path = "."
 
+# initialize the default icons (wifi, battery) and background images
 wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
 wifi_icon_x = 90
 wifi_icon_y = 20
@@ -31,13 +38,14 @@ background_y = 0
 pygame.font.get_fonts()
 ['arial', 'arialblack', 'bahnschrift']
 
+# Declare the fonts and font sizes for the text on the screen
 header_font = pygame.font.SysFont('dejavusansmono', 35)
 usage_font = pygame.font.SysFont('dejavusansmono', 47)
 footer_font = pygame.font.SysFont('dejavusansmono', 30)
 curr_power_font = pygame.font.SysFont('liberationmono', 60)
 welcome_font = pygame.font.SysFont('liberationmono', 31)
 
-# welcome message
+# Display a placeholder welcome message while the system turns on. Sleep for 30 seconds
 pygame.mouse.set_visible(False)
 screen.fill((255, 255, 255))
 welcome_x = 180
@@ -57,7 +65,7 @@ pygame.display.update()
 
 title = "RELCON Homebox #"
 
-time.sleep(30)
+time.sleep(5)
 
 
 def render_icons(batt_status, connection_status, batt_percent):
@@ -120,6 +128,10 @@ def draw_arc(display, start_angle, end_angle, distance, pos, color, thickness = 
             theta += 0.01
 
 def check_keys(data):
+    '''
+        checks whether all the keys in the serial string are present
+        Returns True if so, False otherwise 
+    '''
     keys = ['"error"','"curr_power"', '"link_status"', '"conn"', '"box_num"', '"batt_percent"']
     for key in keys:
         if key not in data:
@@ -128,6 +140,10 @@ def check_keys(data):
     return True
 
 def check_val_type(data):
+    '''
+        checks that all the data in the JSON serial string is of the correct type.
+        Returns True if so, False otherwise 
+    '''
     keys = {"error": "<class 'int'>","curr_power": "<class 'float'>", "link_status": "<class 'int'>", "conn": "<class 'int'>", "box_num": "<class 'int'>", "batt_percent": "<class 'float'>"}
     for key in keys:
         tmp = str(type(data[key]))
@@ -137,6 +153,10 @@ def check_val_type(data):
     return True
 
 def check_power_status(curr_power_usage):
+    '''
+        assigns the x coordinate and RBG color of the current power reading based on the value
+    '''
+
     power_status = []
     if curr_power_usage > 270:
         power_status.append((200, 0, 0))
@@ -156,12 +176,19 @@ def check_power_status(curr_power_usage):
     power_status.append(curr_power_x)
     return power_status
 
-def render_error_message():
+def render_error_message(error):
+    '''
+        Displays the error message if there is an error.
+        Currently error code is not handled.
+        #TODO - modify JSON string and display correct error code if there is an issue
+    '''
+
     error_x = 70
     error_y = 24
+    error = hex(error)
     error_font = pygame.font.SysFont('dejavusansmono', 30)
     error_tag = error_font.render("An internal error occurred!", True, (255, 0, 0))
-    recover_tag = error_font.render("Trying to recover in 4 s", True, (255, 255, 255))
+    recover_tag = error_font.render("Error Code: " + str(error), True, (255, 255, 255))
     screen.blit(error_tag, (error_x, error_y))
     screen.blit(recover_tag, (error_x + 30, 100))
 
@@ -170,22 +197,22 @@ def update_data():
     # end of dummy data
 
     try:
-        ser = serial.Serial(port='/dev/ttyS0',
-            baudrate = 115200,
-            timeout = 4
-        )
-        
-        # ser = serial.Serial(port='COM10',
-        #     baudrate=115200,
-        #     timeout=4
+        # ser = serial.Serial(port='/dev/ttyS0',
+        #     baudrate = 115200,
+        #     timeout = 4
         # )
+        
+        ser = serial.Serial(port='COM10',
+            baudrate=115200,
+            timeout=4
+        )
 
         data = ser.read_until(b'\n').decode('ascii', 'ignore')
         print(data)
 
         if check_keys(data) == False:
             ser.close()
-            return
+            return 0
 
         data =  list(data)
         data = ''.join(data)
@@ -193,13 +220,13 @@ def update_data():
 
         if check_val_type(data) == False:
             ser.close()
-            return
+            return 0
 
         error = int(data["error"])
-        if error:
-            render_error_message()
+        if error != 0:
+            render_error_message(error)
             ser.close()
-            return
+            return 1
 
         curr_power_usage = round(float(data['curr_power']), 0)
         curr_power_usage = int(curr_power_usage)
@@ -221,6 +248,7 @@ def update_data():
         draw_arc(screen, 225, 225-curr_power_usage, 120, [screen_width/2, screen_height/2 + 40 + 10], color, thickness = 15)      
 
         ser.close()
+        return 1
 
     except:
         pass
@@ -236,7 +264,8 @@ while running:
             running = False
 
     draw_arc(screen, 225, -45, 120, [screen_width/2, screen_height/2 + 40 + 10], (72, 72, 72), thickness = 15)
-    update_data()
+    update_screen = update_data()
     pygame.mouse.set_visible(False)
-    pygame.display.update()
+    if update_screen:
+        pygame.display.update()
     time.sleep(4)
