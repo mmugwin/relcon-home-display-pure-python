@@ -25,7 +25,7 @@ python --version Python 3.7.3 $ python3 --version Python 3.7.3
 
 4. Uninstall the default ```pygame``` package that comes preinstalled on the Raspberry Pi and reinstall the latest version using ```pip```
 
-5. To be able to render fonts and images using pygame run the below commands from the terminal
+5. Enable ```pygame``` to render fonts and images by running the below commands from the terminal
    
 
 ```
