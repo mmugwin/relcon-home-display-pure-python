@@ -49,6 +49,7 @@ Name=HomeDisplay
 Exec=/usr/bin/python3 /home/pi/Desktop/relcon-home-display-pure-python/home_disp_pygame.py
 ```
 
-7. Save the folder that contains the home display code on the Desktop. You can clone it from this repo, or send it to the Raspberry Pi another way. 
+7. Enable the hardware serial port
+8. Save the folder that contains the home display code on the Desktop. You can clone it from this repo, or send it to the Raspberry Pi another way. 
 
 If everything went well, your Raspberry Pi is ready to go.
