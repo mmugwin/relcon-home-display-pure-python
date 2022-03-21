@@ -47,7 +47,7 @@ Run
 sudo nano /etc/xdg/autostart/display.desktop
 ```
 
-Enter the following in the file and save. Note that the second argument may be replaced by the path to the ```home_disp_pygame.py``` if you did not save it on the Desktop.
+Enter the following in the file and save. Note that the second argument may be replaced by the path to the ```home_disp_pygame.py``` file if you did not save it on the Desktop.
 
 ```
 [Desktop Entry]
