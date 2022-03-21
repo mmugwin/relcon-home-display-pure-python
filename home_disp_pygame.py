@@ -45,7 +45,7 @@ footer_font = pygame.font.SysFont('dejavusansmono', 30)
 curr_power_font = pygame.font.SysFont('liberationmono', 60)
 welcome_font = pygame.font.SysFont('liberationmono', 31)
 
-# Display a placeholder welcome message while the system turns on. Sleep for 30 seconds
+# Display a placeholder welcome message while the system turns on. Sleep for 10 seconds
 pygame.mouse.set_visible(False)
 screen.fill((255, 255, 255))
 welcome_x = 180
@@ -65,7 +65,7 @@ pygame.display.update()
 
 title = "RELCON Homebox #"
 
-time.sleep(5)
+time.sleep(10)
 
 
 def render_icons(batt_status, connection_status, batt_percent):
@@ -178,9 +178,8 @@ def check_power_status(curr_power_usage):
 
 def render_error_message(error):
     '''
-        Displays the error message if there is an error.
-        Currently error code is not handled.
-        #TODO - modify JSON string and display correct error code if there is an issue
+        Displays the error code if there is an error.
+        The display does not recover from this state, unless the homebox is rebooted
     '''
 
     error_x = 70
@@ -197,15 +196,16 @@ def update_data():
     # end of dummy data
 
     try:
-        # ser = serial.Serial(port='/dev/ttyS0',
-        #     baudrate = 115200,
-        #     timeout = 4
-        # )
-        
-        ser = serial.Serial(port='COM10',
-            baudrate=115200,
-            timeout=4
+        ser = serial.Serial(port='/dev/ttyS0',
+            baudrate = 115200,
+            timeout = 4
         )
+        
+#         Uncomment to test on Windows
+#         ser = serial.Serial(port='COM10',
+#             baudrate=115200,
+#             timeout=4
+#         )
 
         data = ser.read_until(b'\n').decode('ascii', 'ignore')
         print(data)
@@ -262,10 +262,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+    
+    # draw the default grey arc
     draw_arc(screen, 225, -45, 120, [screen_width/2, screen_height/2 + 40 + 10], (72, 72, 72), thickness = 15)
+    
+    # read the serial line and return 1 if the data is valid
     update_screen = update_data()
     pygame.mouse.set_visible(False)
+    
+    # if valid data has been read on the serial line, refresh the screen. 
+    # otherwise, continue displaying the last valid reading
     if update_screen:
         pygame.display.update()
     time.sleep(4)
