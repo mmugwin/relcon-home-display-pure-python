@@ -14,12 +14,12 @@ from math import radians, sin, cos
 pygame.init()
 screen_width = 640
 screen_height = 480
-# screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-screen = pygame.display.set_mode((screen_width, screen_height))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+#screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("RELCON InHome Display")
 
 path = "/home/pi/Desktop/relcon-home-display-pure-python"
-path = "."
+#path = "."             # uncomment this for testing on Windows
 
 # initialize the default icons (wifi, battery) and background images
 wifi_icon = pygame.image.load(path + "/images/outline_wifi_black_24dp.png")
